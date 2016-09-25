@@ -2,7 +2,7 @@ package org.columbia.adb.queryexpansionservice.query;
 
 import java.util.List;
 
-import org.columbia.adb.queryexpansion.query.model.QueryResponseModel;
+import org.columbia.adb.queryexpansionservice.query.model.QueryResponseModel;
 
 public interface QueryWeb {
 

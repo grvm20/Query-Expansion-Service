@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.lang3.StringUtils;
-import org.columbia.adb.queryexpansion.query.model.QueryResponseModel;
 import org.columbia.adb.queryexpansionservice.query.QueryWeb;
+import org.columbia.adb.queryexpansionservice.query.model.QueryResponseModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

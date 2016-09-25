@@ -1,6 +1,6 @@
-package org.columbia.adb.queryexpansion.query.model;
+package org.columbia.adb.queryexpansionservice.query.model;
 
-import org.columbia.adb.queryexpansion.utilities.QueryExpansionServiceUtilities;
+import org.columbia.adb.queryexpansionservice.utilities.QueryExpansionServiceUtilities;
 
 import lombok.Builder;
 import lombok.Getter;

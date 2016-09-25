@@ -1,4 +1,4 @@
-package org.columbia.adb.queryexpansion.utilities;
+package org.columbia.adb.queryexpansionservice.utilities;
 
 import com.google.gson.Gson;
 

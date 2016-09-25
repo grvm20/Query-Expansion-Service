@@ -1,4 +1,4 @@
-package org.columbia.adb.queryexpansion.runner;
+package org.columbia.adb.queryexpansionservice.runner;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

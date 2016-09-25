@@ -1,4 +1,4 @@
-package org.columbia.adb.queryexpansion.interactor;
+package org.columbia.adb.queryexpansionservice.interactor;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.columbia.adb.queryexpansion.query.model.QueryResponseModel;
 import org.columbia.adb.queryexpansionservice.query.QueryWeb;
+import org.columbia.adb.queryexpansionservice.query.model.QueryResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

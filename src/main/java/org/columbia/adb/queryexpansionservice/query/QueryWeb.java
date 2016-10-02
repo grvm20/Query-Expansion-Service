@@ -7,7 +7,7 @@ import org.columbia.adb.queryexpansionservice.query.model.QueryResponseModel;
 public interface QueryWeb {
 
     /**
-     * Returns JSONObject corresponding to a query
+     * Returns List<QueryResponseModel> corresponding to a query
      * 
      * @param query
      *            - Query string to be queried upon

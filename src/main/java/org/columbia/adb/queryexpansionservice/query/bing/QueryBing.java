@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class QueryBing implements QueryWeb {
 
-    private String KEY = "a4YMppsSw10MCeXqtQY41lxTAHv0LFoU7sn4WbpjH/k";
+    private String KEY;
 
     public QueryBing(String key) {
         this.KEY = key;
@@ -29,6 +29,8 @@ public class QueryBing implements QueryWeb {
 
     public List<QueryResponseModel> query(final String query) throws Exception {
 
+        
+        
         String accountKeyAuth = Base64.getEncoder().encodeToString((KEY + ":" + KEY).getBytes());
 
         URL url = new URL(

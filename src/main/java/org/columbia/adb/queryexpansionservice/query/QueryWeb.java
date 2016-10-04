@@ -2,17 +2,28 @@ package org.columbia.adb.queryexpansionservice.query;
 
 import java.util.List;
 
-import org.columbia.adb.queryexpansionservice.query.model.QueryResponseModel;
+import org.columbia.adb.queryexpansionservice.query.model.QueryResultInfo;
 
+/***
+ * Responsible for querying web
+ * @author gauravmishra
+ *
+ */
 public interface QueryWeb {
 
     /**
-     * Returns List<QueryResponseModel> corresponding to a query
+     * Responsible for fetching data from web and converting into a data model
+     * which application understands
      * 
      * @param query
      *            - Query string to be queried upon
-     * @return
+     * @param totalNumberOfResults
+     *            - Total number of docs needed in query results
+     * @return List of
+     *         {@link org.columbia.adb.queryexpansionservice.query.model.QueryResultInfo
+     *         QueryResultInfo} corresponding to a query
      */
-    public List<QueryResponseModel> query(String query) throws Exception;
+    public List<QueryResultInfo> query(final String query,
+            final int totalNumberOfResults) throws Exception;
 
 }

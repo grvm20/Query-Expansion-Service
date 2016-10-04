@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Component;
 
 /***
@@ -28,7 +29,7 @@ public class StopWordsCache {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
-                STOP_WORDS_SET.add(line);
+                STOP_WORDS_SET.add(line.toLowerCase());
             }
         }
     }
@@ -39,7 +40,8 @@ public class StopWordsCache {
      * @return
      */
     public boolean isStopWord(String word) {
-        return STOP_WORDS_SET.contains(word);
+        Validate.notEmpty(word, "Word is blank");
+        return STOP_WORDS_SET.contains(word.toLowerCase());
     }
 
 }

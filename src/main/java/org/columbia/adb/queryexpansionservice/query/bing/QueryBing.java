@@ -19,7 +19,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /***
- * Class responsible for querying bing. 
+ * Class responsible for querying bing.
+ * 
  * @author gauravmishra
  ***/
 
@@ -39,7 +40,7 @@ public class QueryBing implements QueryWeb {
             final int totalNumberOfResults) throws Exception {
 
         Validate.notEmpty(query, "Empty query passed while trying to call bing");
-        
+
         String accountKeyAuth = Base64.getEncoder().encodeToString(
                 (KEY + ":" + KEY).getBytes());
         String urlString = "https://api.datamarket.azure.com/Bing/Search/v1/Composite?Sources=%27web%2Bspell%2BRelatedSearch%27&Query=%27"

@@ -8,11 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.columbia.adb.queryexpansionservice.queryexpander.comparator.TermComparatorBasedOnTFIDF;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.columbia.adb.queryexpansionservice.cache.StopWordsCache;
 import org.columbia.adb.queryexpansionservice.query.model.QueryResultInfo;
+import org.columbia.adb.queryexpansionservice.queryexpander.comparator.TermComparatorBasedOnTFIDF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class ModifiedRocchioQueryExpander implements QueryExpander {
     private final static double BETA = 0.9;
     private final static double GAMMA = 0.4;
     private final static double DELTA = 0.3;
+    private final static Pattern VALID_STRING_PATTERN = Pattern.compile(".*[A-Za-z0-9]+.*");
 
     @Autowired
     private StopWordsCache stopWordsCache;
@@ -81,6 +83,10 @@ public class ModifiedRocchioQueryExpander implements QueryExpander {
                 term = term.toLowerCase();
                 // Ignore stop words
                 if (stopWordsCache.isStopWord(term)) {
+                    continue;
+                }
+                Matcher matcher = VALID_STRING_PATTERN.matcher(term);
+                if(!matcher.find()){
                     continue;
                 }
 
@@ -160,7 +166,7 @@ public class ModifiedRocchioQueryExpander implements QueryExpander {
                         newQueryVector
                                 .put(term, newQueryVector.get(term) - val);
                     else
-                        newQueryVector.put(term, val);
+                        newQueryVector.put(term, -1*val);
                 }
             }
         }

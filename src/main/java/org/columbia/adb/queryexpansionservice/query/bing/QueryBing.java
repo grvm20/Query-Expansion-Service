@@ -1,14 +1,14 @@
 package org.columbia.adb.queryexpansionservice.query.bing;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.Scanner;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.Validate;
 import org.columbia.adb.queryexpansionservice.query.QueryWeb;
 import org.columbia.adb.queryexpansionservice.query.model.QueryResultInfo;
@@ -41,26 +41,20 @@ public class QueryBing implements QueryWeb {
 
         Validate.notEmpty(query, "Empty query passed while trying to call bing");
 
-        String accountKeyAuth = Base64.getEncoder().encodeToString(
+        String accountKeyAuth = Base64.encodeBase64String(
                 (KEY + ":" + KEY).getBytes());
-        String urlString = "https://api.datamarket.azure.com/Bing/Search/v1/Composite?Sources=%27web%2Bspell%2BRelatedSearch%27&Query=%27"
-                + URLEncoder.encode(query, "utf8")
-                + "%27&Options=%27EnableHighlighting%27&$top="
-                + totalNumberOfResults
-                + "&Market=%27en-US%27&Adult=%27Off%27&$format=Json";
+        String bingUrlPattern = "https://api.datamarket.azure.com/Bing/Search/Web?Query=%%27%s%%27&$format=JSON";
+        final String query1 = URLEncoder.encode(query, "utf8");
+        String urlString =String.format(bingUrlPattern, query1);
 
         System.out.println("URL: " + urlString);
 
         URL url = new URL(urlString);
 
-        JSONObject result = null;
-
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setConnectTimeout(0);
         connection.setRequestProperty("Authorization", "Basic "
                 + accountKeyAuth);
-        connection.setRequestProperty("Accept", "*/*");
-        connection.setRequestProperty("Content-Type", "multipart/form-data");
 
         if (connection.getResponseCode() != 200) {
             System.err
@@ -71,17 +65,17 @@ public class QueryBing implements QueryWeb {
         }
 
         List<QueryResultInfo> queryResponses = null;
-        try (@SuppressWarnings("resource")
-        Scanner s = new Scanner(connection.getInputStream())
-                .useDelimiter("\\A")) {
-            String resultStr = s.hasNext() ? s.next() : "";
-            result = new JSONObject(resultStr);
-
-            queryResponses = constructQueryResponses(result);
-
-        }
+        try (final BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String inputLine;
+            final StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+             JSONObject json = new JSONObject(response.toString());
+            queryResponses = constructQueryResponses(json);
 
         return queryResponses;
+        }
     }
 
     private List<QueryResultInfo> constructQueryResponses(
@@ -90,15 +84,12 @@ public class QueryBing implements QueryWeb {
         List<QueryResultInfo> queryResponses = new ArrayList<>();
 
         // TODO Add null checks. If it fails thrown exception
-        JSONObject data = (JSONObject) result.get("d");
-        JSONObject results = (JSONObject) ((JSONArray) data.get("results"))
-                .get(0);
-        JSONArray webResults = (JSONArray) results.get("Web");
+        JSONObject d = result.getJSONObject("d");
+        JSONArray webResults = d.getJSONArray("results");
 
         // TODO We should instead validate and throw exception
-        if (webResults != null
-                && (StringUtils.isNotEmpty((String) results.get("WebTotal")))) {
-            for (int i = 0; i < webResults.length(); i++) {
+        if (webResults != null) {
+            for (int i = 0; i < 10; i++) {
                 JSONObject jsonObject = webResults.getJSONObject(i);
 
                 QueryResultInfo queryResponseModel = new QueryResultInfo(i + 1,

@@ -268,6 +268,14 @@ public class ExtractSample {
 		return res2;
 	}
 	
+	public void driver(String category,String db){
+		String[] categoryArray1={"root", "computers", "health" , "sports"};
+		for(String s : categoryArray1){
+			create_query_set(s);
+			ExtractSample p = new ExtractSample();
+			p.create_summary(p.processCat(category),db);
+		}
+	}
 	public static void main(String args[]){
 		
 		String cat = "Root/Sports/Basketball";
